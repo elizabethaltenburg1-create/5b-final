@@ -12,9 +12,7 @@ function formatDate(value: string) {
 }
 
 export default async function Dashboard() {
-  let webinars: Awaited
-    ReturnType<typeof getCompletedWebinarsWithCounts>
-  > = [];
+let webinars: Awaited<ReturnType<typeof getCompletedWebinarsWithCounts>> = [];
   let loadError: string | null = null;
 
   try {
