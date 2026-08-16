@@ -29,7 +29,8 @@ export default async function Dashboard() {
       </h1>
 
       <p className="mt-1 text-sm text-gray-500">
-        Select a webinar to review engagement and generate BDR follow-up guidance.
+        Select a webinar to review engagement and generate BDR follow-up
+        guidance.
       </p>
 
       {loadError ? (
