@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import type { Webinar } from "@/lib/types";
 
 function formatDate(value: string | null) {
@@ -18,8 +17,6 @@ export default function WebinarDashboard({
 }: {
   initialWebinars: Webinar[];
 }) {
-  const [webinars] = useState(initialWebinars);
-
   return (
     <main className="mx-auto max-w-6xl p-8">
       <h1 className="text-2xl font-semibold text-gray-900">
@@ -27,7 +24,7 @@ export default function WebinarDashboard({
       </h1>
 
       <p className="mt-1 text-sm text-gray-500">
-        Review webinar information and generate AI-powered follow-up content.
+        Review completed webinars and generate follow-up content.
       </p>
 
       <div className="mt-6 overflow-x-auto rounded-lg border border-gray-200">
@@ -37,23 +34,20 @@ export default function WebinarDashboard({
               <th className="px-4 py-3 text-left font-medium text-gray-600">
                 Webinar
               </th>
-
               <th className="px-4 py-3 text-left font-medium text-gray-600">
                 Date
               </th>
-
               <th className="px-4 py-3 text-left font-medium text-gray-600">
                 Presenter
               </th>
-
               <th className="px-4 py-3 text-left font-medium text-gray-600">
-                Description
+                Recording
               </th>
             </tr>
           </thead>
 
           <tbody className="divide-y divide-gray-100 bg-white">
-            {webinars.map((webinar) => (
+            {initialWebinars.map((webinar) => (
               <tr key={webinar.id}>
                 <td className="px-4 py-3 font-medium text-gray-900">
                   {webinar.title}
@@ -67,13 +61,19 @@ export default function WebinarDashboard({
                   {webinar.presenter_name ?? "—"}
                 </td>
 
-                <td className="px-4 py-3 text-gray-600">
-                  {webinar.description ?? "—"}
+                <td className="px-4 py-3">
+           {webinar.recording_link ? (
+  {webinar.recording_link}
+    View Recording
+  </a>
+) : (
+  "—"
+)}
                 </td>
               </tr>
             ))}
 
-            {webinars.length === 0 && (
+            {initialWebinars.length === 0 && (
               <tr>
                 <td
                   colSpan={4}
