@@ -29,8 +29,7 @@ export default async function Dashboard() {
       </h1>
 
       <p className="mt-1 text-sm text-gray-500">
-        Select a webinar to review engagement and generate BDR follow-up
-        guidance.
+        Select a webinar to review engagement and generate BDR follow-up guidance.
       </p>
 
       {loadError ? (
@@ -60,29 +59,29 @@ export default async function Dashboard() {
 
             <tbody className="divide-y divide-gray-100 bg-white">
               {webinars?.map((webinar) => (
-<tr key={webinar.id}>
-  <td className="px-4 py-3 font-medium text-gray-900">
-    {webinar.webinar_name}
-  </td>
+                <tr key={webinar.id}>
+                  <td className="px-4 py-3 font-medium text-gray-900">
+                    {webinar.webinar_name}
+                  </td>
 
-  <td className="px-4 py-3 text-gray-600">
-    {formatDate(webinar.webinar_date)}
-  </td>
+                  <td className="px-4 py-3 text-gray-600">
+                    {formatDate(webinar.webinar_date)}
+                  </td>
 
-  <td className="px-4 py-3 text-right text-gray-600">
-    {webinar.registration_count}
-  </td>
+                  <td className="px-4 py-3 text-right text-gray-600">
+                    {webinar.registration_count}
+                  </td>
 
-  <td className="px-4 py-3 text-right text-gray-600">
-    {webinar.attendance_count}
-  </td>
+                  <td className="px-4 py-3 text-right text-gray-600">
+                    {webinar.attendance_count}
+                  </td>
 
-  <td className="px-4 py-3 text-right">
-    <Link
-      href={`/webinars      View Details
-    </Link>
-  </td>
-</tr>
+                  <td className="px-4 py-3 text-right">
+                    {`/webinars/${webinar.id}`}
+                      View Details
+                    </Link>
+                  </td>
+                </tr>
               ))}
 
               {webinars?.length === 0 && (
