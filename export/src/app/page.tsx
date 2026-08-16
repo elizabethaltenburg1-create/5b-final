@@ -54,11 +54,11 @@ export default async function Dashboard() {
             <tbody>
               {webinars.map((webinar) => (
 <tr key={webinar.id}>
-  <td className="px-4 py-3">
-    {`/webinars/${webinar.id}`}
-      {webinar.webinar_name}
-    </Link>
-  </td>
+<td className="px-4 py-3">
+  <Linkbinars/${webinar.id}`}
+    {webinar.webinar_name}
+  </Link>
+</td>
 
   <td className="px-4 py-3">
     {formatDate(webinar.webinar_date)}
