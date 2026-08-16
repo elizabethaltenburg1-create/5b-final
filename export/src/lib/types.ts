@@ -11,6 +11,8 @@ export type Webinar = {
   last_updated?: string | null;
 };
 
+export type PriorityStatus = "Hot" | "Warm" | "Cold";
+
 export type BdrGuidance = {
   id: number;
   webinar_id: number;
