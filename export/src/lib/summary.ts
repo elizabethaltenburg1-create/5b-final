@@ -7,8 +7,11 @@ import type { WebinarSummary } from "@/lib/types";
 function buildPrompt(webinar: any): string {
   return `Create the following for this webinar:
 
-1. A professional webinar summary (100-150 words)
-2. Exactly 5 key takeaways
+1. A concise executive summary of 40-60 words.
+2. Exactly 3 key takeaways.
+3. Use concise business language.
+4. Focus on business value and audience engagement.
+5. Avoid unnecessary detail and repetition.
 
 Webinar Name: ${webinar.webinar_name}
 Webinar Date: ${webinar.webinar_date}
@@ -25,9 +28,7 @@ Summary:
 Key Takeaways:
 - takeaway 1
 - takeaway 2
-- takeaway 3
-- takeaway 4
-- takeaway 5`;
+- takeaway 3`;
 }
 
 export async function generateSummaryForWebinar(
@@ -39,7 +40,7 @@ export async function generateSummaryForWebinar(
 
   const generatedText = await generateText(
     buildPrompt(webinar),
-    900
+    500
   );
 
   const { data: saved, error } = await supabase
