@@ -54,7 +54,9 @@ export default async function Dashboard() {
                 <th className="px-4 py-3 text-right font-medium text-gray-600">
                   Attendees
                 </th>
-                <th className="px-4 py-3"></th>
+                <th className="px-4 py-3 text-right font-medium text-gray-600">
+                  Actions
+                </th>
               </tr>
             </thead>
 
