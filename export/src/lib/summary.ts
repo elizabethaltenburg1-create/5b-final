@@ -2,38 +2,39 @@ import "server-only";
 import { getSupabaseAdmin } from "@/lib/supabase";
 import { generateText } from "@/lib/claude";
 import { getWebinarOrThrow } from "@/lib/webinars";
-import type { Webinar, WebinarSummary } from "@/lib/types";
+import type { WebinarSummary } from "@/lib/types";
 
-function buildPrompt(webinar: Webinar): string {
-  return `Write a concise summary (3-4 sentences) of the following webinar, for
-someone who didn't attend and wants a quick overview. Cover what it was
-about and who presented it. Don't invent details beyond what's given below.
+function buildPrompt(webinar: any): string {
+  return `Create:
 
-Title: ${webinar.title}
-Date: ${webinar.date}
-Presenter: ${webinar.presenter_name ?? "unknown"}
-Description: ${webinar.description ?? "No description provided."}`;
+1. A professional webinar summary (100-150 words).
+2. Exactly 5 key takeaways.
+
+Webinar Name: ${webinar.webinar_name}
+Webinar Date: ${webinar.webinar_date}
+Registrations: ${webinar.registrations}
+Attendees: ${webinar.attendees}
+Engagement Score: ${webinar.engagement_score ?? "N/A"}
+Lead Priority: ${webinar.lead_priority ?? "N/A"}
+
+Format:
+
+Summary:
+[summary]
+
+Key Takeaways:
+- takeaway 1
+- takeaway 2
+- takeaway 3
+- takeaway 4
+- takeaway 5`;
 }
 
-export async function generateSummaryForWebinar(webinarId: number): Promise<WebinarSummary> {
+export async function generateSummaryForWebinar(
+  webinarId: number
+): Promise<WebinarSummary> {
   const supabase = getSupabaseAdmin();
 
   const webinar = await getWebinarOrThrow(webinarId);
-  const summaryText = await generateText(buildPrompt(webinar), 400);
 
-  const { data: saved, error: saveError } = await supabase
-    .from("webinar_summaries")
-    .insert({
-      webinar_id: webinarId,
-      summary_text: summaryText,
-      date_generated: new Date().toISOString(),
-    })
-    .select("*")
-    .single();
-
-  if (saveError || !saved) {
-    throw new Error(saveError?.message ?? "Failed to save generated summary");
-  }
-
-  return saved as WebinarSummary;
-}
+  const generatedText = await 
