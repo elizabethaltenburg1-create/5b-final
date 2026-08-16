@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getCompletedWebinarsWithCounts } from "@/lib/webinars";
 
 export const dynamic = "force-dynamic";
@@ -47,6 +48,7 @@ export default async function Dashboard() {
                 <th className="px-4 py-3 text-right">Attendees</th>
                 <th className="px-4 py-3 text-left">Engagement</th>
                 <th className="px-4 py-3 text-left">Priority</th>
+                <th className="px-4 py-3 text-center">Actions</th>
               </tr>
             </thead>
 
@@ -76,13 +78,19 @@ export default async function Dashboard() {
                   <td className="px-4 py-3">
                     {webinar.lead_priority ?? "—"}
                   </td>
+
+                  <td className="px-4 py-3 text-center">
+                    {`/webinars/${webinar.id}`}
+                      View Details
+                    </Link>
+                  </td>
                 </tr>
               ))}
 
               {webinars.length === 0 && (
                 <tr>
                   <td
-                    colSpan={6}
+                    colSpan={7}
                     className="px-4 py-8 text-center text-gray-500"
                   >
                     No webinars found.
