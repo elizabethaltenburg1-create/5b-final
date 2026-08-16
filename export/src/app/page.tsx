@@ -12,10 +12,9 @@ function formatDate(value: string) {
 }
 
 export default async function Dashboard() {
-  let webinars: Awaited<
+  let webinars: Awaited
     ReturnType<typeof getCompletedWebinarsWithCounts>
   > = [];
-
   let loadError: string | null = null;
 
   try {
@@ -30,7 +29,6 @@ export default async function Dashboard() {
       <h1 className="text-2xl font-semibold text-gray-900">
         Completed Webinars
       </h1>
-
       <p className="mt-1 text-sm text-gray-500">
         Webinar summary and key takeaway generator
       </p>
@@ -50,38 +48,34 @@ export default async function Dashboard() {
                 <th className="px-4 py-3 text-left">Priority</th>
               </tr>
             </thead>
-
             <tbody>
               {webinars.map((webinar) => (
-<tr key={webinar.id}>
-  <td className="px-4 py-3">
-    <Linkbinars/${webinar.id}`}
-      {webinar.webinar_name}
-    </Link>
-  </td>
-
-  <td className="px-4 py-3">
-    {formatDate(webinar.webinar_date)}
-  </td>
-
-  <td className="px-4 py-3 text-right">
-    {webinar.registrations}
-  </td>
-
-  <td className="px-4 py-3 text-right">
-    {webinar.attendees}
-  </td>
-
-  <td className="px-4 py-3">
-    {webinar.engagement_score ?? "—"}
-  </td>
-
-  <td className="px-4 py-3">
-    {webinar.lead_priority ?? "—"}
-  </td>
-</tr>
+                <tr key={webinar.id}>
+                  <td className="px-4 py-3">
+                    <Link
+                      href={`/webinars/${webinar.id}`}
+                      className="text-blue-600 hover:underline"
+                    >
+                      {webinar.webinar_name}
+                    </Link>
+                  </td>
+                  <td className="px-4 py-3">
+                    {formatDate(webinar.webinar_date)}
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    {webinar.registrations}
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    {webinar.attendees}
+                  </td>
+                  <td className="px-4 py-3">
+                    {webinar.engagement_score ?? "—"}
+                  </td>
+                  <td className="px-4 py-3">
+                    {webinar.lead_priority ?? "—"}
+                  </td>
+                </tr>
               ))}
-
               {webinars.length === 0 && (
                 <tr>
                   <td
