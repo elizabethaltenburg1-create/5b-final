@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { getCompletedWebinarsWithCounts } from "@/lib/webinars";
 
 export const dynamic = "force-dynamic";
@@ -82,7 +81,7 @@ export default async function Dashboard() {
                   <td className="px-4 py-3 text-center">
                     {`/webinars/${webinar.id}`}
                       View Details
-                    </Link>
+                    </a>
                   </td>
                 </tr>
               ))}
