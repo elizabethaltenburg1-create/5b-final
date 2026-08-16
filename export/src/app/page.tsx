@@ -53,33 +53,33 @@ export default async function Dashboard() {
 
             <tbody>
               {webinars.map((webinar) => (
-                <tr key={webinar.id}>
-                  <td className="px-4 py-3">
-                    {`/webinars/${webinar.id}`}
-                      {webinar.webinar_name}
-                    </Link>
-                  </td>
+<tr key={webinar.id}>
+  <td className="px-4 py-3">
+    {`/webinars/${webinar.id}`}
+      {webinar.webinar_name}
+    </Link>
+  </td>
 
-                  <td className="px-4 py-3">
-                    {formatDate(webinar.webinar_date)}
-                  </td>
+  <td className="px-4 py-3">
+    {formatDate(webinar.webinar_date)}
+  </td>
 
-                  <td className="px-4 py-3 text-right">
-                    {webinar.registrations}
-                  </td>
+  <td className="px-4 py-3 text-right">
+    {webinar.registrations}
+  </td>
 
-                  <td className="px-4 py-3 text-right">
-                    {webinar.attendees}
-                  </td>
+  <td className="px-4 py-3 text-right">
+    {webinar.attendees}
+  </td>
 
-                  <td className="px-4 py-3">
-                    {webinar.engagement_score ?? "—"}
-                  </td>
+  <td className="px-4 py-3">
+    {webinar.engagement_score ?? "—"}
+  </td>
 
-                  <td className="px-4 py-3">
-                    {webinar.lead_priority ?? "—"}
-                  </td>
-                </tr>
+  <td className="px-4 py-3">
+    {webinar.lead_priority ?? "—"}
+  </td>
+</tr>
               ))}
 
               {webinars.length === 0 && (
