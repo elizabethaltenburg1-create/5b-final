@@ -40,6 +40,9 @@ export default function WebinarDashboard({
               <th className="px-4 py-3 text-left font-medium text-gray-600">
                 Presenter
               </th>
+              <th className="px-4 py-3 text-left font-medium text-gray-600">
+                Recording
+              </th>
             </tr>
           </thead>
 
@@ -51,4 +54,39 @@ export default function WebinarDashboard({
                 </td>
 
                 <td className="px-4 py-3 text-gray-600">
+                  {formatDate(webinar.date)}
+                </td>
+
+                <td className="px-4 py-3 text-gray-600">
+                  {webinar.presenter_name ?? "—"}
+                </td>
+
+                <td className="px-4 py-3">
+                  {webinar.recording_link ? (
+                    {webinar.recording_link}
+                      View Recording
+                    </a>
+                  ) : (
+                    "—"
+                  )}
+                </td>
+              </tr>
+            ))}
+
+            {initialWebinars.length === 0 && (
+              <tr>
+                <td
+                  colSpan={4}
+                  className="px-4 py-8 text-center text-gray-500"
+                >
+                  No webinars found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </main>
+  );
+}
            
