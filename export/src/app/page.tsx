@@ -55,7 +55,7 @@ export default async function Dashboard() {
               {webinars.map((webinar) => (
 <tr key={webinar.id}>
 <td className="px-4 py-3">
-  <Linkbinars/${webinar.id}`}
+  {`/webinars/${webinar.id}`}
     {webinar.webinar_name}
   </Link>
 </td>
