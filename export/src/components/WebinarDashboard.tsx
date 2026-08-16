@@ -61,15 +61,15 @@ export default function WebinarDashboard({
                   {webinar.presenter_name ?? "—"}
                 </td>
 
-                <td className="px-4 py-3">
-           {webinar.recording_link ? (
-  {webinar.recording_link}
-    View Recording
-  </a>
-) : (
-  "—"
-)}
-                </td>
+                <<td className="px-4 py-3">
+  {webinar.recording_link ? (
+    <a
+      href={webinar.recording_linkecording
+    </a>
+  ) : (
+    "—"
+  )}
+</td>
               </tr>
             ))}
 
