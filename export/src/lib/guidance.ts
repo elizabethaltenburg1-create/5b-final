@@ -1,61 +1,81 @@
 import "server-only";
-import Anthropic from "@anthropic-ai/sdk";
 import { getSupabaseAdmin } from "@/lib/supabase";
-import type { Webinar } from "@/lib/types";
+import { generateText } from "@/lib/claude";
+import { getWebinarOrThrow } from "@/lib/webinars";
+import type { BdrGuidance, EngagementSummary, Webinar } from "@/lib/types";
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-const MODEL = process.env.CLAUDE_MODEL || "claude-sonnet-5";
+export async function getEngagementSummary(webinarId: number): Promise<EngagementSummary> {
+  const supabase = getSupabaseAdmin();
 
-function buildPrompt(webinar: Webinar): string {
-  return `You are helping a Business Development Rep (BDR) plan follow-up on webinar leads.
+  const { data, error } = await supabase
+    .from("leads")
+    .select("engagement_score, priority_status, flagged, registrations!inner(webinar_id)")
+    .eq("registrations.webinar_id", webinarId);
 
-Webinar: ${webinar.webinar_name}
-Date: ${webinar.webinar_date}
-Registrations: ${webinar.registrations}
-Attendees: ${webinar.attendees}
-Engagement Score: ${webinar.engagement_score ?? "unknown"}
-Lead Priority: ${webinar.lead_priority ?? "unknown"}
+  if (error) {
+    throw new Error(error.message);
+  }
 
-Write concise, actionable BDR follow-up guidance (3-5 sentences) for this webinar's attendees: what to say, what to reference from the webinar, and how urgently to reach out given the engagement score and lead priority.`;
+  const leads = data ?? [];
+  const leadCount = leads.length;
+  const averageScore = leadCount
+    ? Math.round(
+        leads.reduce((sum, lead) => sum + lead.engagement_score, 0) / leadCount
+      )
+    : null;
+
+  return {
+    averageScore,
+    hotCount: leads.filter((lead) => lead.priority_status === "Hot").length,
+    warmCount: leads.filter((lead) => lead.priority_status === "Warm").length,
+    coldCount: leads.filter((lead) => lead.priority_status === "Cold").length,
+    flaggedCount: leads.filter((lead) => lead.flagged).length,
+    leadCount,
+  };
 }
 
-export async function generateGuidanceForWebinar(id: number): Promise<Webinar> {
-  const supabaseAdmin = getSupabaseAdmin();
-  const { data: webinar, error: fetchError } = await supabaseAdmin
-    .from("webinars")
-    .select("*")
-    .eq("id", id)
-    .single();
+function buildPrompt(webinar: Webinar, summary: EngagementSummary): string {
+  return `You are helping a Business Development Rep (BDR) plan follow-up on webinar leads.
 
-  if (fetchError || !webinar) {
-    throw new Error(fetchError?.message ?? `Webinar ${id} not found`);
-  }
+Webinar: ${webinar.title}
+Date: ${webinar.date}
+Description: ${webinar.description ?? "n/a"}
+Presenter: ${webinar.presenter_name ?? "unknown"}
 
-  const message = await anthropic.messages.create({
-    model: MODEL,
-    max_tokens: 500,
-    messages: [{ role: "user", content: buildPrompt(webinar as Webinar) }],
-  });
+Engagement summary:
+- Leads scored: ${summary.leadCount}
+- Average engagement score: ${summary.averageScore ?? "n/a"}
+- Hot leads: ${summary.hotCount}
+- Warm leads: ${summary.warmCount}
+- Cold leads: ${summary.coldCount}
+- Flagged for immediate follow-up: ${summary.flaggedCount}
 
-  const guidance = message.content
-    .filter((block): block is Anthropic.TextBlock => block.type === "text")
-    .map((block) => block.text)
-    .join("\n")
-    .trim();
+Write concise, actionable BDR follow-up talking points and messaging guidance
+(4-6 sentences) for this webinar's leads: what to reference from the webinar,
+how to tailor messaging by engagement tier (hot/warm/cold), and how urgently
+to reach out given the numbers above.`;
+}
 
-  const { data: updated, error: updateError } = await supabaseAdmin
-    .from("webinars")
-    .update({
-      bdr_guidance: guidance,
-      guidance_generated_at: new Date().toISOString(),
+export async function generateGuidanceForWebinar(webinarId: number): Promise<BdrGuidance> {
+  const supabase = getSupabaseAdmin();
+
+  const webinar = await getWebinarOrThrow(webinarId);
+  const summary = await getEngagementSummary(webinarId);
+  const generatedText = await generateText(buildPrompt(webinar, summary), 700);
+
+  const { data: saved, error: saveError } = await supabase
+    .from("bdr_guidance")
+    .insert({
+      webinar_id: webinarId,
+      generated_text: generatedText,
+      date_generated: new Date().toISOString(),
     })
-    .eq("id", id)
     .select("*")
     .single();
 
-  if (updateError || !updated) {
-    throw new Error(updateError?.message ?? "Failed to save generated guidance");
+  if (saveError || !saved) {
+    throw new Error(saveError?.message ?? "Failed to save generated guidance");
   }
 
-  return updated as Webinar;
+  return saved as BdrGuidance;
 }

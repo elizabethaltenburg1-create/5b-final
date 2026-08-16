@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { generateGuidanceForWebinar } from "@/lib/guidance";
+import { generateSummaryForWebinar } from "@/lib/summary";
 
 // Claude responses can take a while; give this function more headroom than
-// the platform default so it isn't cut off mid-generation. Vercel Hobby
-// plans cap serverless functions at 60s regardless of this value — raise
-// your plan (or reduce max_tokens in lib/guidance.ts) if you still see
-// timeouts in production.
+// the platform default so it isn't cut off mid-generation (same rationale
+// as generate-guidance).
 export const maxDuration = 60;
 
 export async function POST(
@@ -20,11 +18,11 @@ export async function POST(
   }
 
   try {
-    const guidance = await generateGuidanceForWebinar(webinarId);
-    return NextResponse.json({ guidance });
+    const summary = await generateSummaryForWebinar(webinarId);
+    return NextResponse.json({ summary });
   } catch (error) {
     const message =
-      error instanceof Error ? error.message : "Failed to generate guidance";
+      error instanceof Error ? error.message : "Failed to generate summary";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
