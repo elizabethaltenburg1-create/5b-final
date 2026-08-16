@@ -77,10 +77,9 @@ export default async function Dashboard() {
                   </td>
 
                   <td className="px-4 py-3 text-right">
-                    {`/webinars/${webinar.id}`}
-                      View Details
-                    </Link>
-                  </td>
+  <Link
+    href={`/webinars/${webinar.id}`}
+    className="d>
                 </tr>
               ))}
 
