@@ -12,7 +12,7 @@ function formatDate(value: string) {
 }
 
 export default async function Dashboard() {
-  let webinars = [];
+  let webinars: any[] = [];
   let loadError: string | null = null;
 
   try {
@@ -29,8 +29,7 @@ export default async function Dashboard() {
       </h1>
 
       <p className="mt-1 text-sm text-gray-500">
-        Select a webinar to review engagement and generate BDR follow-up
-        guidance.
+        Select a webinar to review engagement and generate BDR follow-up guidance.
       </p>
 
       {loadError ? (
@@ -45,15 +44,19 @@ export default async function Dashboard() {
                 <th className="px-4 py-3 text-left font-medium text-gray-600">
                   Webinar
                 </th>
+
                 <th className="px-4 py-3 text-left font-medium text-gray-600">
                   Date
                 </th>
+
                 <th className="px-4 py-3 text-right font-medium text-gray-600">
                   Registrations
                 </th>
+
                 <th className="px-4 py-3 text-right font-medium text-gray-600">
                   Attendees
                 </th>
+
                 <th className="px-4 py-3 text-right font-medium text-gray-600">
                   Actions
                 </th>
