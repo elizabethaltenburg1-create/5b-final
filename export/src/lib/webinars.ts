@@ -25,8 +25,8 @@ export async function getCompletedWebinarsWithCounts(): Promise<WebinarWithCount
   const { data: webinars, error } = await supabase
     .from("webinars")
     .select("*")
-    .lte("date", today)
-    .order("date", { ascending: false });
+.lte("webinar_date", today)
+.order("webinar_date", { ascending: false });
 
   if (error) {
     throw new Error(error.message);
