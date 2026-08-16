@@ -1,37 +1,14 @@
 export type Webinar = {
   id: number;
-  title: string;
-  date: string;
-  description: string | null;
-  presenter_name: string | null;
-  recording_link: string | null;
-  slide_deck_link: string | null;
-};
-
-export type AttendanceStatus = "registered" | "attended" | "no_show";
-
-export type Registration = {
-  id: number;
-  webinar_id: number;
-  registrant_name: string;
-  company: string | null;
-  email: string;
-  job_title: string | null;
-  registration_date: string;
-  attendance_status: string;
-  duration_attended: number;
-};
-
-export type PriorityStatus = "Hot" | "Warm" | "Cold";
-
-export type Lead = {
-  id: number;
-  registration_id: number;
-  engagement_score: number;
-  priority_status: string;
-  flagged: boolean;
-  date_scored: string;
-  assigned_bdr: string | null;
+  webinar_name: string;
+  webinar_date: string;
+  registrations: number;
+  attendees: number;
+  engagement_score: string | null;
+  lead_priority: string | null;
+  bdr_guidance?: string | null;
+  guidance_generated_at?: string | null;
+  last_updated?: string | null;
 };
 
 export type BdrGuidance = {
@@ -45,6 +22,7 @@ export type WebinarSummary = {
   id: number;
   webinar_id: number;
   summary_text: string;
+  key_takeaways: string;
   date_generated: string;
 };
 
