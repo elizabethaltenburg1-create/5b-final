@@ -69,4 +69,23 @@ export default function WebinarDashboard({
                   ) : (
                     "—"
                   )}
-              
+                </td>
+              </tr>
+            ))}
+
+            {initialWebinars.length === 0 && (
+              <tr>
+                <td
+                  colSpan={4}
+                  className="px-4 py-8 text-center text-gray-500"
+                >
+                  No webinars found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </main>
+  );
+}
