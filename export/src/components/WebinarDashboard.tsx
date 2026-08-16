@@ -20,12 +20,8 @@ export default function WebinarDashboard({
   return (
     <main className="mx-auto max-w-6xl p-8">
       <h1 className="text-2xl font-semibold text-gray-900">
-        Webinar BDR Guidance
+        Webinar Dashboard
       </h1>
-
-      <p className="mt-1 text-sm text-gray-500">
-        Review completed webinars and generate follow-up content.
-      </p>
 
       <div className="mt-6 overflow-x-auto rounded-lg border border-gray-200">
         <table className="min-w-full divide-y divide-gray-200 text-sm">
@@ -34,11 +30,25 @@ export default function WebinarDashboard({
               <th className="px-4 py-3 text-left font-medium text-gray-600">
                 Webinar
               </th>
+
               <th className="px-4 py-3 text-left font-medium text-gray-600">
                 Date
               </th>
+
+              <th className="px-4 py-3 text-right font-medium text-gray-600">
+                Registrations
+              </th>
+
+              <th className="px-4 py-3 text-right font-medium text-gray-600">
+                Attendees
+              </th>
+
               <th className="px-4 py-3 text-left font-medium text-gray-600">
-                Presenter
+                Engagement Score
+              </th>
+
+              <th className="px-4 py-3 text-left font-medium text-gray-600">
+                Lead Priority
               </th>
             </tr>
           </thead>
@@ -47,15 +57,27 @@ export default function WebinarDashboard({
             {initialWebinars.map((webinar) => (
               <tr key={webinar.id}>
                 <td className="px-4 py-3 font-medium text-gray-900">
-                  {webinar.title}
+                  {webinar.webinar_name}
                 </td>
 
                 <td className="px-4 py-3 text-gray-600">
-                  {formatDate(webinar.date)}
+                  {formatDate(webinar.webinar_date)}
+                </td>
+
+                <td className="px-4 py-3 text-right text-gray-600">
+                  {webinar.registrations}
+                </td>
+
+                <td className="px-4 py-3 text-right text-gray-600">
+                  {webinar.attendees}
                 </td>
 
                 <td className="px-4 py-3 text-gray-600">
-                  {webinar.presenter_name ?? "—"}
+                  {webinar.engagement_score ?? "—"}
+                </td>
+
+                <td className="px-4 py-3 text-gray-600">
+                  {webinar.lead_priority ?? "—"}
                 </td>
               </tr>
             ))}
@@ -63,7 +85,7 @@ export default function WebinarDashboard({
             {initialWebinars.length === 0 && (
               <tr>
                 <td
-                  colSpan={3}
+                  colSpan={6}
                   className="px-4 py-8 text-center text-gray-500"
                 >
                   No webinars found.
@@ -76,4 +98,3 @@ export default function WebinarDashboard({
     </main>
   );
 }
-           
