@@ -12,7 +12,7 @@ function formatDate(value: string) {
 }
 
 export default async function Dashboard() {
-  let webinars;
+  let webinars = [];
   let loadError: string | null = null;
 
   try {
@@ -29,7 +29,8 @@ export default async function Dashboard() {
       </h1>
 
       <p className="mt-1 text-sm text-gray-500">
-        Select a webinar to review engagement and generate BDR follow-up guidance.
+        Select a webinar to review engagement and generate BDR follow-up
+        guidance.
       </p>
 
       {loadError ? (
@@ -53,12 +54,12 @@ export default async function Dashboard() {
                 <th className="px-4 py-3 text-right font-medium text-gray-600">
                   Attendees
                 </th>
-                <th className="px-4 py-3" />
+                <th className="px-4 py-3"></th>
               </tr>
             </thead>
 
             <tbody className="divide-y divide-gray-100 bg-white">
-              {webinars?.map((webinar) => (
+              {webinars.map((webinar) => (
                 <tr key={webinar.id}>
                   <td className="px-4 py-3 font-medium text-gray-900">
                     {webinar.webinar_name}
@@ -77,13 +78,14 @@ export default async function Dashboard() {
                   </td>
 
                   <td className="px-4 py-3 text-right">
-  <Link
-    href={`/webinars/${webinar.id}`}
-    className="d>
+                    {`/webinars/${webinar.id}`}
+                      View Details
+                    </Link>
+                  </td>
                 </tr>
               ))}
 
-              {webinars?.length === 0 && (
+              {webinars.length === 0 && (
                 <tr>
                   <td
                     colSpan={5}
